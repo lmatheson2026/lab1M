@@ -1,64 +1,86 @@
 import java.util.Arrays;
 
 public class myArrayList {
-    private Fraction[] array;
+    private Fraction[] elements;
     private int size;
-    private int cap;
-    private double growthFactor;
+    private int capacity;
 
     public myArrayList() {
-        this.cap = 50;
-        this.array = new Fraction[cap];
+        this.capacity = 50; // set capacity
+        this.elements = new Fraction[capacity]; //new array with size of capacity
         this.size = 0;
-        this.growthFactor = 1.2;
     }
 
-    public int indexOf(Fraction input) {
-        for (int i = 0; i < size; i++) {
-            if (array[i].equals(input)) {
-                return i;
-            }
-        }
-        return -1;
+    private void grow() {
+        int newCapacity = (int)(capacity * 1.2); // store an increase of array size by 20%
+        elements = Arrays.copyOf(elements, newCapacity); // create new array with updated capacity
+        capacity = newCapacity; // reassign
     }
-//allows a fraction object to be added into a certain index
+    
     public void add(int index, Fraction input) {
-//makes sure there is room for the fraction
-        if (size == cap) {
-            // Increase capacity by 20% (growth factor) if more room is needed
-            cap = (int) (cap * growthFactor);
-            array = Arrays.copyOf(array, cap);
+        if (size == capacity) { // if the array size is at capacity
+            grow(); // call grow method
         }
 
-        // Shift elements to the right to make space for the new element
+        // out of bounds error handling
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index is out of bounds.");
+        }
+
         for (int i = size; i > index; i--) {
-            array[i] = array[i - 1];
+            elements[i] = elements[i - 1];
         }
 
-        // Insert the new element at the index
-        array[index] = input;
+        elements[index] = input;
         size++;
     }
 
+
+    public int indexOf(Fraction input) {
+        // iterate through the elements of the list
+        for (int i = 0; i < size; i++) {
+            // Compare the current element with the specified Fraction using the compare method
+            if (elements[i].compareTo(input) == 0) {
+                // If the elements are equal, return the index
+                return i;
+            }
+        }
+        // if the specified 'Fraction' is not found, return -1
+        return -1;
+    }
+
+
+
     public Fraction remove(int index) {
-
-        Fraction removedElement = array[index];
-
-        // Shift elements to the left to fill the gap
-        for (int i = index; i < size - 1; i++) {
-            array[i] = array[i + 1];
+        // out of bounds error handle
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index is out of bounds.");
         }
 
-        // Set the last element to null and decrease the size
-        array[size - 1] = null;
-        size--;
 
-        return removedElement;
-    }
-//Prints result
+            // gets the element to be removed and store it in the removedElement variable
+            Fraction removedElement = elements[index];
+
+            // shift elements to the left to fill the gap left by the removed element
+            for (int i = index; i < size - 1; i++) {
+                elements[i] = elements[i + 1];
+            }
+
+            // set the last element to null to clear it (optional, but good practice)
+            elements[size - 1] = null;
+
+            // decrement the size of the list to reflect the removal
+            size--;
+
+            return removedElement;
+        }
+
+    
+
+    // simple print method for the array
     public void print() {
         for (int i = 0; i < size; i++) {
-            array[i].print();
+            elements[i].print();
         }
     }
 }
