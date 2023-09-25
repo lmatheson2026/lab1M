@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Fraction implements INumber<Fraction> {
+public class Fraction implements INumber<Fraction> , Comparable<Fraction> {
     protected double numerator, denominator;
 
     public Fraction(final double numerator, final double denominator) {
@@ -9,12 +9,16 @@ public class Fraction implements INumber<Fraction> {
     }
 
     public static void main(String[] args) {
-        Fraction[] fractionArray = new Fraction[100];
-        for (int i = 0; i < fractionArray.length; i++) {
-            fractionArray[i] = new Fraction(i, i + 1);
-        }
-// fraction used for comparing
+    	// fraction used for comparing
         Fraction X = new Fraction(9, 10);
+
+      
+      Fraction [] fractionArray = new Fraction[100];
+    
+        for (int i = 0; i < fractionArray.length; i++) {
+            fractionArray[i] =  new Fraction(i, i + 1);
+        }
+
 
         // Print min and max fractions in the array
         Fraction minFraction = findMin(fractionArray);
@@ -35,8 +39,28 @@ public class Fraction implements INumber<Fraction> {
         // Calculate the number of Fractions greater than X
         int count = getCountGreater(fractionArray, X);
         System.out.println("Number of Fractions greater than X: " + count);
-    }
+  
+        
+        
+        myArrayList fractionList = new myArrayList();
+      Fraction f =  new Fraction(9, 10);
+        // Add fractions to the list
 
+        for (int i = 0; i < fractionArray.length; i++) {
+        	Fraction x = new Fraction(i, i + 1);
+            fractionList.add(i,x); 
+        }
+      fractionList.print();
+/*calls for myArrayList 
+ * 
+        fractionList.add(0, f);
+        System.out.println("Index of fraction2: " + fractionList.indexOf());
+
+        Fraction removedFraction = fractionList.remove();
+ 
+*/
+    }
+    
     @Override
     public Fraction plus(final Fraction input) {
         return new Fraction(numerator + input.numerator, denominator + input.denominator);
@@ -118,4 +142,11 @@ public class Fraction implements INumber<Fraction> {
         }
         return count;
     }
+
+    
+
+	public int compareTo(Fraction o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
